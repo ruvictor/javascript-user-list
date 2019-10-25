@@ -1,8 +1,8 @@
 // User Class
 class User {
-    constructor(fname,lname,location) {
-        this.fname = fname;
-        this.lname = lname;
+    constructor(id,name,location) {
+        this.id = id;
+        this.name = name;
         this.location = location;
     }
 }
@@ -21,8 +21,8 @@ class UI {
         const row = document.createElement('tr');
 
         row.innerHTML = `
-            <td>${user.fname}</td>
-            <td>${user.lname}</td>
+            <td>${user.id}</td>
+            <td>${user.name}</td>
             <td>${user.location}</td>
             <td><a href="#" class="btn btn-danger btn-sm delete">x</a></td>
         `;
@@ -49,8 +49,8 @@ class UI {
     }
 
     static clearFields(){
-        document.querySelector('#fname').value = '';
-        document.querySelector('#lname').value = '';
+        document.querySelector('#id').value = '';
+        document.querySelector('#name').value = '';
         document.querySelector('#location').value = '';
     }
 }
@@ -95,16 +95,16 @@ document.querySelector('#user-form').addEventListener('submit', (e) => {
     // prevent actual sumit
     e.preventDefault();
     // get form values
-    const fname = document.querySelector('#fname').value;
-    const lname = document.querySelector('#lname').value;
+    const id = document.querySelector('#id').value;
+    const name = document.querySelector('#name').value;
     const location = document.querySelector('#location').value;
 
     // Validate
-    if(fname === '' || lname === '' || location === ''){
+    if(id === '' || name === '' || location === ''){
         UI.showAlerts('Please fill in all fields', 'danger');
     }else{
         // Instantiate user
-        const user = new User(fname, lname, location);
+        const user = new User(id, name, location);
 
         // Add user to list
         UI.addUserToList(user);
