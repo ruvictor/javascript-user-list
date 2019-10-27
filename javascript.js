@@ -44,7 +44,7 @@ class UI {
         const form = document.querySelector('#user-form');
         container.insertBefore(div, form);
 
-        // Remove after 3 seconds
+        // Remove not after 3 seconds
         setTimeout(() => document.querySelector('.alert').remove(), 3000);
     }
 
