@@ -37,6 +37,24 @@ class UI {
         list.appendChild(row);
     }
 
+    static deleteUser(element){
+        if(element.classList.contains('delete')){
+            element.parentElement.parentElement.remove();
+        }
+    }
+
+    static showNotification(message, className){
+        const div = document.createElement('div');
+        div.className = `alert alert-${className}`;
+        div.appendChild(document.createTextNode(message));
+        const container = document.querySelector('.container');
+        const form = document.querySelector('#user-form');
+        container.insertBefore(div, form);
+
+        // remove not in 3 seconds
+        setTimeout(() => document.querySelector('.alert').remove(), 3000);
+    }
+
     // clear fields method
     static clearFileds(){
         document.querySelector('#id').value = '';
@@ -57,16 +75,29 @@ document.querySelector('#user-form').addEventListener('submit', (e) => {
     const name = document.querySelector('#name').value;
     const location = document.querySelector('#location').value;
 
-    // Instantiate user
-    const user = new Users(id, name, location);
+    // Validate
+    if(id === '' || name === '' || location === ''){
+        UI.showNotification('All fields are required!', 'danger');
+    }else{
+        // Instantiate user
+        const user = new Users(id, name, location);
 
-    // Add user to table
-    UI.addUserToList(user);
+        // Add user to table
+        UI.addUserToList(user);
 
-    // Clear form fields
-    UI.clearFileds();
+        // Success not
+        UI.showNotification('User added', 'success');
 
-    // console.log(user);
+        // Clear form fields
+        UI.clearFileds();
+
+        // console.log(user);
+    }
 });
 
 // Event to remove a user
+document.querySelector('#user-list').addEventListener('click', (e) => {
+    UI.deleteUser(e.target);
+
+    UI.showNotification('User Removed', 'success');
+});
