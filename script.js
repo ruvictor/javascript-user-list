@@ -10,14 +10,7 @@ class Users {
 // UI class
 class UI {
     static displayUsers(){
-        const StoredUsers = [
-            {
-                id: 1,
-                name: 'John',
-                location: 'Chicago'
-            }
-        ];
-        const users = StoredUsers;
+        const users = Store.getUsers();
 
         users.forEach((user) => UI.addUserToList(user));
     }
@@ -64,6 +57,38 @@ class UI {
 }
 
 // Store class
+class Store {
+    static getUsers(){
+        let users;
+        if(localStorage.getItem('users') === null){
+            users = [];
+        }else{
+            users = JSON.parse(localStorage.getItem('users'));
+        }
+
+        return users;
+    }
+
+    static addUser(user){
+        const users = Store.getUsers();
+
+        users.push(user);
+
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+
+    static removeUser(id){
+        const users = Store.getUsers();
+
+        users.forEach((user, index) => {
+            if(user.id === id){
+                users.splice(index, 1);
+            }
+        });
+
+        localStorage.setItem('users', JSON.stringify(users));
+    }
+}
 
 // Event to display users
 document.addEventListener('DOMContentLoaded', UI.displayUsers);
@@ -85,6 +110,9 @@ document.querySelector('#user-form').addEventListener('submit', (e) => {
         // Add user to table
         UI.addUserToList(user);
 
+        // Add user to storage
+        Store.addUser(user);
+
         // Success not
         UI.showNotification('User added', 'success');
 
@@ -97,7 +125,12 @@ document.querySelector('#user-form').addEventListener('submit', (e) => {
 
 // Event to remove a user
 document.querySelector('#user-list').addEventListener('click', (e) => {
+
+    // delete user from UI
     UI.deleteUser(e.target);
+
+    // delete user from storage
+    Store.removeUser(e.target.parentElement.previousElementSibling.previousElementSibling.previousElementSibling.textContent)
 
     UI.showNotification('User Removed', 'success');
 });
