@@ -1,11 +1,3 @@
-// User Class
-class User {
-    constructor(fname,lname,location) {
-        this.fname = fname;
-        this.lname = lname;
-        this.location = location;
-    }
-}
 
 // UI Class
 class UI {
